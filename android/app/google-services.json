@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "736530110989",
+    "project_id": "molten-raceway-419617",
+    "storage_bucket": "molten-raceway-419617.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736530110989:android:bb8593f9d09855f6ed1344",
+        "android_client_info": {
+          "package_name": "com.example.kotlinproj"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcYQHlveU4tVsJtbgAyyi5v9j4zp_vze4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
