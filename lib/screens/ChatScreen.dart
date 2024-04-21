@@ -10,8 +10,8 @@ import '../CustomWidgets/base64Image.dart';
 import '../classes/UserService.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String id,name;
-  const ChatScreen({super.key, required this.id,required this.name});
+  final String id,name,image;
+  const ChatScreen({super.key, required this.id,required this.name,required this.image});
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -46,62 +46,65 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>; // Example: '2022-09-15 14:20:45'
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     Timestamp timestamp = data['timestamp'];
-
-// Convert Timestamp to DateTime
     DateTime dateTime = timestamp.toDate();
-
-// Add two hours to the DateTime
     DateTime dateTimePlusTwoHours = dateTime.add(Duration(hours: 2));
-
-// Format DateTime to 'hh:mm a' format (12-hour format with AM/PM)
     String formattedTime = DateFormat('hh:mm a').format(dateTimePlusTwoHours);
-    var alignment = (data['senderId'] ==
-            (userService.user.value == null
-                ? userService.teacher.value!.id
-                : userService.user.value!.id)
-        ? Alignment.centerRight
-        : Alignment.centerLeft);
-    var crossAxisAlignment = (data['senderId'] ==
-        (userService.user.value == null
-            ? userService.teacher.value!.id
-            : userService.user.value!.id)
-        ? CrossAxisAlignment.end
-        : CrossAxisAlignment.start);
+
+    bool isCurrentUser = data['senderId'] == (userService.user.value?.id ?? userService.teacher.value!.id);
+    Alignment messageAlignment = isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+    CrossAxisAlignment crossAxisAlignment = isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+  print(data['image']);
     return Container(
-      padding: EdgeInsets.all(8),
-      alignment: alignment,
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      alignment: messageAlignment,
       child: Column(
-        crossAxisAlignment:crossAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
-          Row(
-            children: [
-              Text(data['senderName'],style: TextStyle(fontSize: 12,color: Colors.grey[800],fontFamily: 'Roboto'),),
-              SizedBox(
-                width: 40.0,  // Set the width of the image
-                height: 40.0, // Set the height of the image
-                child: Material(
-                  elevation: 8.0,
-                  shape: CircleBorder(),
-                  color: Colors.transparent,
-                  child: Base64ImageWidget(
-                    base64String: userService.teacher.value == null ?
-                    userService.user.value!.mainImage :
-                    userService.teacher.value!.mainImage,
+          Container(
+            width: 250,
+            child: Row(
+              mainAxisAlignment: isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+              children: [
+                if (!isCurrentUser) ...[
+                  _buildSenderImage(widget.image),
+                  SizedBox(width: 8),
+                ],
+                Expanded(
+                  child: ChatBubble(
+                    Message: data['message'],
+                    isCurrentUser: isCurrentUser,
+                    // Add style modifications here if needed
                   ),
                 ),
-              ),
-            ],
+                if (isCurrentUser) ...[
+                  SizedBox(width: 8),
+                  _buildSenderImage(userService.teacher.value?.mainImage ?? userService.user.value!.mainImage),
+                ],
+              ],
+            ),
           ),
-         ChatBubble(Message: data['message']),
           Text(formattedTime, style: TextStyle(fontSize: 12, color: Colors.grey[800], fontFamily: 'Roboto')),
         ],
       ),
-
     );
   }
-
+  Widget _buildSenderImage(String base64String) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: SizedBox(
+        width: 40.0,
+        height: 40.0,
+        child: Material(
+          elevation: 1.0,
+          shape: CircleBorder(),
+          color: Colors.transparent,
+          child: Base64ImageWidget(base64String: base64String),
+        ),
+      ),
+    );
+  }
   Widget _buildMessageList()
   {
     return StreamBuilder(stream: _chatService.getMessages(widget.id, userService.user.value == null

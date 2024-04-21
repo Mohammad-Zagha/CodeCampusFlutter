@@ -1,8 +1,11 @@
 
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:get/get.dart';
+import 'package:kotlinproj/CustomWidgets/base64Image.dart';
 import 'package:kotlinproj/screens/ChatPage.dart';
 import 'package:kotlinproj/screens/ChatScreen.dart';
 
@@ -20,9 +23,51 @@ class _MessengerState extends State<Messenger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.greenAccent[400],
+            ),
+            onPressed: () {
+              Get.offNamed('/home');
+            },
+          ),
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontFamily: 'RobotoMono',
+                letterSpacing: 2,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'CODE',
+                  style: TextStyle(
+                    color: Colors.greenAccent[700],
+                  ),
+                ),
+                TextSpan(
+                  text: ' CAMPUS',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
 
-      body: _buildUserList(),
+                ),
+            TextSpan(
+              text: ' Messenger',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                color: Colors.grey,
+                fontSize: 15
+              )),
+              ],
+            ),
+          )),
+              body: _buildUserList(),
     );
+
   }
 
   Widget _buildUserList()
@@ -50,9 +95,15 @@ return ListView(
         if(userService.teacher.value!.id != data['uid'])
           {
             return ListTile(
-              title:  Text(data['name']),
-              onTap: (){Get.to(ChatScreen(id: data['uid'],name: data['name'],));},
+              leading: CircleAvatar(
+                backgroundImage: MemoryImage(base64Decode(data['image'])), // Use MemoryImage for Base64 image data
+              ),
+              title: Text(data['name']),
+              onTap: () {
+                Get.to(ChatScreen(id: data['uid'], name: data['name'],image:data['image']));
+              },
             );
+
           }
       }
     else
@@ -60,8 +111,13 @@ return ListView(
         if(userService.user.value!.id != data['uid'])
         {
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: MemoryImage(base64Decode(data['image'])), // Use MemoryImage for Base64 image data
+            ),
             title: Text(data['name']),
-            onTap: (){Get.to(ChatScreen(id: data['uid'],name: data['name'],));},
+            onTap: () {
+              Get.to(ChatScreen(id: data['uid'], name: data['name'],image:data['image']));
+            },
           );
         }
       }
