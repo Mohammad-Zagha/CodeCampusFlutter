@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/rating/gf_rating.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:hive/hive.dart';
 import 'package:kotlinproj/CustomWidgets/QuizCard.dart';
 import 'package:kotlinproj/classes/QuizViewModel.dart';
 import 'package:kotlinproj/controllers/TokenService.dart';
@@ -13,6 +15,7 @@ import 'package:kotlinproj/controllers/TokenService.dart';
 import 'package:kotlinproj/screens/AddExerciseSplash.dart';
 import 'package:kotlinproj/screens/JoinLiveScreen.dart';
 import 'package:kotlinproj/screens/Messenger.dart';
+import 'package:kotlinproj/screens/ProductScreen.dart';
 import 'package:kotlinproj/screens/Subscriptions.dart';
 import 'package:kotlinproj/screens/addCourse.dart';
 import 'package:kotlinproj/screens/MyCourses.dart';
@@ -23,6 +26,7 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../CustomWidgets/CourseCard.dart';
 import 'package:lottie/lottie.dart';
 
+import '../CustomWidgets/base64Image.dart';
 import '../classes/CourseClass.dart';
 import '../classes/TeacherClass.dart';
 import '../classes/UserClass.dart';
@@ -47,24 +51,206 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: Drawer(
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ListTile(
-              title: Text("Profile"),
-              onTap: () {
-                Get.toNamed('/profile');
-              },
-            ),
-            ListTile(
-              title: Text("Subscriptions"),
-              onTap: () async {
-                Future<List<Course>> courses = userService.fetchSubedCourses();
+            Column(
 
-                Get.to(Subscriptions(courses: await courses));
-              },
-            )
+              children: [
+                Container(height: 180,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.green, Colors.greenAccent],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                  child: Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20,),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontFamily: 'RobotoMono',
+                            letterSpacing: 2,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'CODE',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' CAMPUS',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.cast_for_education_outlined,color: Colors.white,),
+                          SizedBox(width: 10,),
+                            Text("Education",style: TextStyle(fontFamily: 'Helvetica-rounded',color: Colors.white),)
+                        ],
+                      )
+                    ],
+                  ),),
+                ),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("Profile"),
+                  onTap: () {
+                    Get.toNamed('/profile');
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Divider(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.subscriptions),
+                  title: Text("Subscriptions"),
+                  onTap: () async {
+                    Future<List<Course>> courses =
+                        userService.fetchSubedCourses();
+
+                    Get.to(Subscriptions(courses: await courses));
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Divider(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.shopping_cart),
+                  title: Text("Cart"),
+                  onTap: () async {
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Divider(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.library_books),
+                  title: Text("Books"),
+                  onTap: () async {
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Divider(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.history),
+                  title: Text("Transactions"),
+                  onTap: () async {
+                  },
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, bottom: 25),
+              width: 250,
+              height: 130,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.circular(35.0), // Adjust the radius as needed
+                border: Border.all(
+                  color: Color(0xff00E676).withOpacity(0.3),
+                  width: 1.0, // Adjust the border width as needed
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(
+                        0.5), // Adjust the shadow color and opacity
+                    spreadRadius: 2, // Adjust the spread radius
+                    blurRadius: 10, // Adjust the blur radius
+                    offset: Offset(0, 3), // Adjust the offset
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Center(
+                    child: Text(
+                      userService.teacher.value == null
+                          ? userService.user.value!.email
+                          : userService.teacher.value!.email,
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 15,
+                          color: Colors.grey[500]),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      AvatarGlow(
+                        startDelay: const Duration(milliseconds: 1000),
+                        glowColor: Colors.greenAccent,
+                        glowShape: BoxShape.circle,
+                        curve: Curves.fastOutSlowIn,
+                        child: SizedBox(
+                          width: 50.0, // Set the width of the image
+                          height: 50.0, // Set the height of the image
+                          child: Material(
+                            elevation: 3.0,
+                            shape: CircleBorder(),
+                            color: Colors.transparent,
+                            child: Base64ImageWidget(
+                              base64String: userService.teacher.value == null
+                                  ? userService.user.value!.mainImage
+                                  : userService.teacher.value!.mainImage,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        userService.teacher.value == null
+                            ? userService.user.value!.userName
+                            : userService.teacher.value!.teacherName,
+                        style: TextStyle(
+                            fontFamily: 'Helvetica-rounded',
+                            fontSize: 18,
+                            color: Colors.grey[800]),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            tokenService.deleteToken();
+                            userService.teacher.value = null;
+                            userService.user.value = null;
+                            Get.toNamed('/login');
+                          },
+                          icon: Icon(Icons.logout)),
+                    ],
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -113,74 +299,92 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.logout),
-                      onPressed: () async {
-                        await tokenService.deleteToken();
-                        userService.user.value = null;
-                        userService.teacher.value = null;
-                        Get.offNamed('/login');
-                        // Your logout logic here
-                      },
+                    Container(
+                      margin: EdgeInsets.only(right: 10),
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent[
+                            700], // Set the background color to white
+                        shape: BoxShape
+                            .circle, // Optional: Makes the container circular
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.to(Messenger());
+                        },
+                        icon: Icon(Icons.send),
+                        color: Colors
+                            .white, // Optional: Change the icon color if needed
+                      ),
                     ),
                   ],
                 );
               }),
 
               Obx(() {
-                if (userService.user.value != null){ return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: GestureDetector(
-                    onTap: () => showJoinDialog(context),
-                    child: Container(
-                        height: 130,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 16),
-                        decoration: BoxDecoration(
-
-                          gradient: LinearGradient(
-                            colors: [Colors.orange, Colors.amber.shade400],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(
-                                  0.5), // Adjust the shadow color and opacity
-                              spreadRadius: 3, // Adjust the spread radius
-                              blurRadius: 10, // Adjust the blur radius
-                              offset: Offset(0, 2), // Adjust the offset
+                if (userService.user.value != null) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: GestureDetector(
+                      onTap: () => showJoinDialog(context),
+                      child: Container(
+                          height: 130,
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.orange, Colors.amber.shade400],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.video_call_rounded,
-                                color: Colors.white,
-                                size: 75,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(
+                                    0.5), // Adjust the shadow color and opacity
+                                spreadRadius: 3, // Adjust the spread radius
+                                blurRadius: 10, // Adjust the blur radius
+                                offset: Offset(0, 2), // Adjust the offset
                               ),
-                              Container(
-                                margin: EdgeInsets.only(left: 5),
-                                child: Text(
-                                  "Join\nMeeting",
-                                  style: TextStyle(
-                                      fontFamily: 'Helvetica-rounded',
-                                      color: Colors.white,
-                                      fontSize: 30),
-                                ),
-                              )
                             ],
                           ),
-                        )),
-                  ),
-                );}
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.video_call_rounded,
+                                  color: Colors.white,
+                                  size: 75,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    "Join\nMeeting",
+                                    style: TextStyle(
+                                        fontFamily: 'Helvetica-rounded',
+                                        color: Colors.white,
+                                        fontSize: 30),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
+                    ),
+                  );
+                }
                 return Container();
-               }),
+              }),
               Obx(() {
                 if (userService.user.value != null) {
                   // Student-specific content
@@ -320,9 +524,7 @@ class _HomeState extends State<Home> {
                           fontSize: 20),
                     ),
                     GFButton(
-                      onPressed: () {
-                        Get.to(Messenger());
-                      },
+                      onPressed: () {},
                       shape: GFButtonShape.pills,
                       color: const Color(0xff00E676),
                       child: const Text(
@@ -787,82 +989,87 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Container(
-                width: 400,
-                height: 330,
-                child: ListView(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                            15.0), // Adjust the radius as needed
-                        border: Border.all(
-                          color: Color(0xff00E676).withOpacity(0.5),
-                          width: 2.0, // Adjust the border width as needed
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(
-                                0.5), // Adjust the shadow color and opacity
-                            spreadRadius: 7, // Adjust the spread radius
-                            blurRadius: 10, // Adjust the blur radius
-                            offset: Offset(3, 3), // Adjust the offset
+              GestureDetector(
+                onTap: (){
+                  Get.to(ProductScreen());
+                },
+                child: Container(
+                  width: 400,
+                  height: 330,
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(
+                              15.0), // Adjust the radius as needed
+                          border: Border.all(
+                            color: Color(0xff00E676).withOpacity(0.5),
+                            width: 2.0, // Adjust the border width as needed
                           ),
-                        ],
-                      ),
-                      margin: EdgeInsets.only(right: 10),
-                      child: TransparentImageCard(
-                        width: 230,
-                        height: 300,
-                        imageProvider: AssetImage('assets/books/book2.jpg'),
-                        tags: [
-                          _tag('Best Seller', () {}),
-                          _tag('books', () {}),
-                          _tag('Hot', () {}),
-                        ],
-                        title: _title(text: "CodeQuickly", color: Colors.white),
-                        description: _content(
-                            text: "Card and book info", color: Colors.white),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                            15.0), // Adjust the radius as needed
-                        border: Border.all(
-                          color: Color(0xff00E676).withOpacity(0.3),
-                          width: 1.0, // Adjust the border width as needed
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(
+                                  0.5), // Adjust the shadow color and opacity
+                              spreadRadius: 7, // Adjust the spread radius
+                              blurRadius: 10, // Adjust the blur radius
+                              offset: Offset(3, 3), // Adjust the offset
+                            ),
+                          ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(
-                                0.5), // Adjust the shadow color and opacity
-                            spreadRadius: 5, // Adjust the spread radius
-                            blurRadius: 10, // Adjust the blur radius
-                            offset: Offset(0, 3), // Adjust the offset
+                        margin: EdgeInsets.only(right: 10),
+                        child: TransparentImageCard(
+                          width: 230,
+                          height: 300,
+                          imageProvider: AssetImage('assets/books/book2.jpg'),
+                          tags: [
+                            _tag('Best Seller', () {}),
+                            _tag('books', () {}),
+                            _tag('Hot', () {}),
+                          ],
+                          title: _title(text: "CodeQuickly", color: Colors.white),
+                          description: _content(
+                              text: "Card and book info", color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(
+                              15.0), // Adjust the radius as needed
+                          border: Border.all(
+                            color: Color(0xff00E676).withOpacity(0.3),
+                            width: 1.0, // Adjust the border width as needed
                           ),
-                        ],
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(
+                                  0.5), // Adjust the shadow color and opacity
+                              spreadRadius: 5, // Adjust the spread radius
+                              blurRadius: 10, // Adjust the blur radius
+                              offset: Offset(0, 3), // Adjust the offset
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.only(right: 10),
+                        child: TransparentImageCard(
+                          width: 230,
+                          height: 300,
+                          imageProvider: AssetImage('assets/books/book1.jpg'),
+                          tags: [
+                            _tag('Best Seller', () {}),
+                            _tag('books', () {}),
+                            _tag('Hot', () {}),
+                          ],
+                          title: _title(text: "CodeQuickly", color: Colors.white),
+                          description: _content(
+                              text: "Card and book info", color: Colors.white),
+                        ),
                       ),
-                      margin: EdgeInsets.only(right: 10),
-                      child: TransparentImageCard(
-                        width: 230,
-                        height: 300,
-                        imageProvider: AssetImage('assets/books/book1.jpg'),
-                        tags: [
-                          _tag('Best Seller', () {}),
-                          _tag('books', () {}),
-                          _tag('Hot', () {}),
-                        ],
-                        title: _title(text: "CodeQuickly", color: Colors.white),
-                        description: _content(
-                            text: "Card and book info", color: Colors.white),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

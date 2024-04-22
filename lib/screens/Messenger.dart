@@ -24,51 +24,72 @@ class _MessengerState extends State<Messenger> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.greenAccent[400],
-            ),
-            onPressed: () {
-              Get.offNamed('/home');
-            },
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.greenAccent[400],
           ),
-          title: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                fontFamily: 'RobotoMono',
-                letterSpacing: 2,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'CODE',
-                  style: TextStyle(
-                    color: Colors.greenAccent[700],
-                  ),
-                ),
-                TextSpan(
-                  text: ' CAMPUS',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-
-                ),
-            TextSpan(
-              text: ' Messenger',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: Colors.grey,
-                fontSize: 15
-              )),
-              ],
+          onPressed: () {
+            Get.offNamed('/home');
+          },
+        ),
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              fontFamily: 'RobotoMono',
+              letterSpacing: 2,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
-          )),
-              body: _buildUserList(),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'CODE',
+                style: TextStyle(
+                  color: Colors.greenAccent[700],
+                ),
+              ),
+              TextSpan(
+                text: ' CAMPUS',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              TextSpan(
+                text: ' Messenger',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: Colors.grey,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Select an account to chat with',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[500],
+              ),
+            ),
+          ),
+          Container(
+              width: 350,
+              child: Divider()),
+          Expanded(
+            child: _buildUserList(),
+          ),
+        ],
+      ),
     );
-
   }
+
 
   Widget _buildUserList()
   {
