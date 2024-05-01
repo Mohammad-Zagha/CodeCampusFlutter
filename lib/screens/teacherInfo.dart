@@ -263,7 +263,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
                       'age':age,
                       'mainMimeType':mainMimeType
                     });
-                    var url = Uri.parse('http://192.168.1.102:3000/api/v1/Teacher/signUp'); // Replace with your actual endpoint
+                    var url = Uri.parse('http://192.168.1.109:3000/api/v1/Teacher/signUp'); // Replace with your actual endpoint
                     var response = await http.post(
                       url,
                       headers: {

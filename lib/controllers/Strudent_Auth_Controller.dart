@@ -37,7 +37,7 @@ class StudentAuthController extends GetxController {
     try {
 
       var response = await http.post(
-        Uri.parse('http://192.168.1.102:3000/api/v1/User/signUp'),
+        Uri.parse('http://192.168.1.109:3000/api/v1/User/signUp'),
         headers: {
           "Content-Type": "application/json",
         },

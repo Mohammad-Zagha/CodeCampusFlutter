@@ -57,7 +57,7 @@ class AddCourseController extends GetxController {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.1.102:3000/api/v1/Teacher/upload-video/$CurrentCourseId'),
+        Uri.parse('http://192.168.1.109:3000/api/v1/Teacher/upload-video/$CurrentCourseId'),
       );
       request.headers['token'] = token!;
       request.fields['title'] = videoTitleController.text;
@@ -111,7 +111,7 @@ class AddCourseController extends GetxController {
     String coverImageBase64 = base64Encode(coverImage);
     String mainImageBase64 = base64Encode(mainImage);
 
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/addcourse');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/addcourse');
     var body = json.encode({
       'courseName': courseNameController.text,
       'description': descriptionController.text,
@@ -145,7 +145,7 @@ class AddCourseController extends GetxController {
   }
   Future<void> getCourses() async {
     String? token = await _tokenService.getToken();
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/myCourses');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/myCourses');
     var response = await http.get(
       url,
       headers: {
@@ -184,7 +184,7 @@ class AddCourseController extends GetxController {
   Future<void> getCourseVideos(String courseId) async {
     String? token = await _tokenService.getToken();
     print(courseId);
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/getCourseVideos/$courseId');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/getCourseVideos/$courseId');
 
     var response = await http.get(
       url,

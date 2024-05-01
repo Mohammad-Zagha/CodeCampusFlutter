@@ -86,7 +86,7 @@ class QuizController extends GetxController {
   }
 
   Future<void> fetchQuiz(String id) async {
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/quiz/$id');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/quiz/$id');
     var response = await http.get(
       url,
       headers: {

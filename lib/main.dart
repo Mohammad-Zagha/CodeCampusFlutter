@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               focusedColor: Colors.green
           ),
         ),
-        initialRoute: '/presingin',
+        initialRoute: '/splash',
         getPages: [
           GetPage(name: '/login', page: () => NewLogin()),
           GetPage(name: '/addcourse', page: () => AddCourse()),

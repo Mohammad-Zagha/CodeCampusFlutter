@@ -20,7 +20,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.initState();
 
     _videoPlayerController =
-        VideoPlayerController.network('http://192.168.1.104:3000/uploads/' + widget.videoUrl);
+        VideoPlayerController.network('http://192.168.1.109:3000/uploads/' + widget.videoUrl);
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,

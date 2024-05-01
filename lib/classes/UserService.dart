@@ -40,7 +40,7 @@ class UserService extends GetxService {
   }
 
   Future<void> fetchQuizzes() async {
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/quizzes');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/quizzes');
     var response = await http.get(
       url,
       headers: {
@@ -61,7 +61,7 @@ class UserService extends GetxService {
     List<Course> filteredCourses = [];
 
     String? token = await _tokenService.getToken();
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/User/viewSubscribedCourses');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/User/viewSubscribedCourses');
     var response = await http.get(
       url,
       headers: {
@@ -90,7 +90,7 @@ class UserService extends GetxService {
     return filteredCourses;
   }
   Future<void> fetchCourses() async {
-    var url = Uri.http('192.168.1.102:3000', '/api/v1/Teacher/courses');
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/Teacher/courses');
     var response = await http.get(
       url,
       headers: {
@@ -132,7 +132,7 @@ class UserService extends GetxService {
     try {
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.102:3000/api/v1/User/payment'),
+        Uri.parse('http://192.168.1.109:3000/api/v1/User/payment'),
         body: body,
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ class UserService extends GetxService {
         {
           await Stripe.instance.presentPaymentSheet().then((value) async {
             String? token = await _tokenService.getToken();
-            var url = Uri.http('192.168.1.102:3000', '/api/v1/User/subscribeToCourse');
+            var url = Uri.http('192.168.1.109:3000', '/api/v1/User/subscribeToCourse');
             String jsonData = json.encode({
               'courseId':Id ,
               'flag':1,

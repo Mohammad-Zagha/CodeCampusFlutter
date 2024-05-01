@@ -33,7 +33,7 @@ class _CourseCardState extends State<CourseCard> {
     return   GestureDetector(
       onTap: () async{
         String? token = await _tokenService.getToken();
-        var url = Uri.http('192.168.1.102:3000', '/api/v1/User/subscribeToCourse');
+        var url = Uri.http('192.168.1.109:3000', '/api/v1/User/subscribeToCourse');
         String jsonData = json.encode({
           'courseId':widget.course.id ,
           'flag':0,

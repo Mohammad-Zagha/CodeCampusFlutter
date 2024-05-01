@@ -20,7 +20,7 @@ class HomeController extends GetxController {
     try {
       String? token = await _tokenService.getToken();
       var response = await http.get(
-        Uri.parse('http://192.168.1.102:3000/api/v1/User/getuser'),
+        Uri.parse('http://192.168.1.109:3000/api/v1/User/getuser'),
         headers: {
           "Content-Type": "application/json",
           "token": "$token",

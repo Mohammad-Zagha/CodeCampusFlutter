@@ -143,13 +143,13 @@ class ProductScreen extends StatelessWidget {
             ),
             Positioned(
                 top: 350,
-                left: 55,
+                left: 40,
                 child: Container(
               height: 80,
-              width: 300,
+              width: 330,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(26),
+                borderRadius: BorderRadius.circular(35),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
@@ -159,7 +159,160 @@ class ProductScreen extends StatelessWidget {
                   ),
                 ],
               ),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10,),
+                      Icon(Icons.add_shopping_cart_rounded,size: 28,color: Colors.grey,),
+                      SizedBox(width: 10,),
+                      Text("Add to cart",style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 18,
+                        fontWeight:  FontWeight.w800,
+                        color: Colors.black87
+                      ),),
+                      Spacer(),
+                      Icon(Icons.navigate_next_rounded)
+                    ],
+                  )
             )),
+            Positioned(
+                top: 450,
+                left: 40,
+                child: Container(
+                    height: 80,
+                    width: 330,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(35),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10,),
+                        Icon(Icons.payment,size: 28,color: Colors.grey,),
+                        SizedBox(width: 10,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 15,),
+                            Text("Buy now",style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 18,
+                                fontWeight:  FontWeight.w800,
+                                color: Colors.black87
+                            ),),
+                            Expanded(child:  Text(
+                              'Instent delevry (PDF copy)',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: Colors.grey,
+                                fontSize: 13,
+                              ),),)
+
+                          ],
+                        ),
+                        Spacer(),
+                        Icon(Icons.attach_money_outlined,size: 20,color: Colors.grey[900],),
+                        Text("45",style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 18,
+                            fontWeight:  FontWeight.w800,
+                            color: Colors.black87
+                        ),),
+                        SizedBox(width: 10,)
+                      ],
+                    ),
+                )),
+            Positioned(
+              top: 550,
+                left: 45,
+              child: Row(
+                children: [
+                  Text(
+                  'You may also ',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 28,
+                      fontFamily: 'Roboto-Mono',
+
+                  ),
+                              ),
+                  Text(
+                    'Like... ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        fontSize: 28,
+                        fontFamily: 'Roboto',
+                        color: Colors.black
+                    ),
+                  ),
+                ],
+              ),),
+            Positioned(
+                top: 600,
+                left: 40,
+                child: Container(
+                  height: 250,
+                  width: 330,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(35),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 7,
+                        offset: Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                    Column(
+                      children: [
+                        SizedBox(height: 18,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+
+                            Container(
+                              width:130,
+                              child: Text(
+                                'Crushing & Influence',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    fontFamily: 'Helvetica'
+                                ),
+                              ),
+                            ),
+                              SizedBox(width: 65,),
+                            Container(
+                              height: 150,
+                              width: 90,
+                              child: Image.asset(
+                                'assets/books/book1.jpg', // Replace with your asset
+                                width: 100, // Set to your preferred width
+                              ),
+                            ),
+                          ],
+                        ),
+                    
+                      ],
+                    )
+                    ],
+                  ),
+                )),
           ],
         ),
       ),

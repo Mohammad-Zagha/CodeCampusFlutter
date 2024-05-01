@@ -60,7 +60,7 @@ Future<void> uploadQuiz()async{
   );
   String quizJson = json.encode(quiz.toJson());
   print(quizJson);
-  Uri uri = Uri.http('192.168.1.102:3000', '/api/v1/teacher/addQuiz');
+  Uri uri = Uri.http('192.168.1.109:3000', '/api/v1/teacher/addQuiz');
 
   try {
     // Make a POST request with the JSON body

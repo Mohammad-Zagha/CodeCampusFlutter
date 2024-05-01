@@ -45,9 +45,9 @@ class SignInController extends GetxController {
     // Determine the URI based on the selected role, without query parameters
     Uri uri;
     if (selectedRole.value == 'Student') {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/user/signin');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/user/signin');
     } else {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/teacher/signin');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/teacher/signin');
     }
 
     // Encode the data to JSON
@@ -112,9 +112,9 @@ class SignInController extends GetxController {
     // Determine the URI based on the selected role, without query parameters
     Uri uri;
     if (selectedRole.value == 'Student') {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/user/sendcode');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/user/sendcode');
     } else {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/teacher/sendcode');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/teacher/sendcode');
     }
 
     // Encode the data to JSON
@@ -145,9 +145,9 @@ class SignInController extends GetxController {
 
     Uri uri;
     if (selectedRole.value == 'Student') {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/user/userconfirmEmailbycode');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/user/userconfirmEmailbycode');
     } else {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/teacher/teacherconfirmEmailbycode');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/teacher/teacherconfirmEmailbycode');
     }
 
     String jsonData = json.encode({
@@ -177,9 +177,9 @@ class SignInController extends GetxController {
     // Determine the URI based on the selected role, without query parameters
     Uri uri;
     if (selectedRole.value == 'Student') {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/user/getuser');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/user/getuser');
     } else {
-      uri = Uri.http('192.168.1.102:3000', '/api/v1/teacher/getteacher');
+      uri = Uri.http('192.168.1.109:3000', '/api/v1/teacher/getteacher');
     }
     try {
       // Make a POST request with the JSON body

@@ -44,7 +44,7 @@ class Signup extends StatelessWidget {
       // Make a request to sign up endpoint
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.1.102:4000/log/signup'),
+          Uri.parse('http://192.168.1.109:4000/log/signup'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
