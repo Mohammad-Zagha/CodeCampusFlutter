@@ -159,21 +159,37 @@ class _ExerciseState extends State<Exercise> {
   void showResultsDialog() {
     quizController.calculateTotalScore(); // Ensure the score is updated
 
+    // Function to fire after the dialog is dismissed
+    void onDialogClosed() {
+      fireYourRequest(); // Replace this with your actual request function
+    }
+
     showDialog(
       context: context,
+      barrierDismissible: true, // This ensures the dialog can be dismissed by clicking outside
       builder: (BuildContext context) {
-        final totalMarks = quizController.quiz.problems.fold<int>(0, (sum, item) => sum + item.marks);
+        final totalMarks = quizController.quiz.problems.fold<int>(
+            0, (sum, item) => sum + item.marks);
         return AlertDialog(
           title: const Text('Exercise Done'),
-          content: Text('Your final grade is ${quizController.totalScore.value} out of $totalMarks.'),
+          content: Text(
+              'Your final grade is ${quizController.totalScore.value} out of $totalMarks.'),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
-              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              onPressed: () {
+                Navigator.of(context).pop(); // This will close the dialog
+              },
             ),
           ],
         );
       },
-    );
+    ).then((val) {
+      onDialogClosed(); // This will be called when the dialog is dismissed
+    });
+  }
+  void fireYourRequest() async{
+    quizController.editPoints(10);
+
   }
 }

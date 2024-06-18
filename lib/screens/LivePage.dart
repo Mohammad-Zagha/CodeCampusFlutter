@@ -26,8 +26,8 @@ class LivePage extends StatelessWidget {
     ];
 
     return ZegoUIKitPrebuiltLiveStreaming(
-      appID: 1087625216,
-      appSign: "166985f350446347fa1bd20924b1cd395a857e7b0122fa66f28c3e3d1e55d5b7",
+      appID: 1584986389,
+      appSign: "a1e83efbeb47e90c07bbb9ceefb0d4ab227b05107673101be55c5cc2507b41c2",
       userID: userId,
       userName: '${name}_$userId',
       liveID: liveID,

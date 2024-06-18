@@ -42,7 +42,7 @@ class PaymentScreen extends StatelessWidget {
                     fontSize: 22),
               ),
               Text(
-                "Welcome to your new Course",
+                "Thank you for your purchase",
                 style: TextStyle(
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w800,

@@ -6,7 +6,7 @@ import 'package:getwidget/types/gf_button_type.dart';
 import 'package:kotlinproj/screens/siginup_screen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../controllers/Auth_Controller.dart';
 
 class NewLogin extends StatelessWidget {

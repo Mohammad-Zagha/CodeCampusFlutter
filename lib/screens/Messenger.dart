@@ -1,12 +1,8 @@
 
-
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:get/get.dart';
-import 'package:kotlinproj/CustomWidgets/base64Image.dart';
-import 'package:kotlinproj/screens/ChatPage.dart';
 import 'package:kotlinproj/screens/ChatScreen.dart';
 
 import '../classes/UserService.dart';

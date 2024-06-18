@@ -4,7 +4,7 @@ class User {
   final String email;
   final int age;
   final String gender;
-  final int points;
+   int points;
   final int streakLength;
   final bool confirmEmail;
   final String createdAt;

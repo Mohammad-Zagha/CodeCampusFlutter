@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../classes/UserClass.dart';
 import '../classes/UserService.dart';
 import 'TokenService.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 class SignInController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -86,15 +86,20 @@ class SignInController extends GetxController {
       else if(response.statusCode == 200){
         String token = 'codecamps__' + decodedResponse['token'];
 
-        await _tokenService.saveToken(token);
-         await fetchData();
+    await _tokenService.saveToken(token);
+       await fetchData();
 
-        _firestore.collection('users').doc(decodedResponse['id']).set({
-          'uid':decodedResponse['id'],
-          'name':decodedResponse['name'],
-          'image': userService.user.value == null ? userService.teacher.value!.mainImage:userService.user.value!.mainImage
 
-        });
+          _firestore.collection('users').doc(decodedResponse['id']).set({
+            'uid': decodedResponse['id'],
+            'name': userService.user.value == null
+                ? userService.teacher.value!.teacherName
+                : userService.user.value!.userName,
+            'image':userService.user.value == null
+                ? userService.teacher.value!.mainImage
+                : userService.user.value!.mainImage,
+          });
+
         Get.toNamed('/home');
       }
     } catch (e) {
@@ -174,6 +179,7 @@ class SignInController extends GetxController {
   }
   Future<void> fetchData() async {
     String? token = await _tokenService.getToken();
+
     // Determine the URI based on the selected role, without query parameters
     Uri uri;
     if (selectedRole.value == 'Student') {
@@ -190,7 +196,7 @@ class SignInController extends GetxController {
           "token": "$token"
         },
       );
-      print(response.body);
+      print("here"+response.body);
       var decodedResponse = json.decode(response.body);
 
       if (selectedRole.value == 'Student') {

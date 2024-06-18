@@ -1342,7 +1342,7 @@ packages:
     source: hosted
     version: "3.4.0"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: d3bbe5553a986e83980916ded2f0b435ef2e1893dfaa29d5a7a790d0eca12180
@@ -1539,7 +1539,7 @@ packages:
     source: hosted
     version: "10.1.0"
   stripe_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stripe_platform_interface
       sha256: "2f01a6d974ab734ba3824c6f7a2fd01fe7b1f899e7bbace26cb1f66a48bee776"

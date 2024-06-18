@@ -31,7 +31,7 @@ class PreLiveJoinScreen extends StatelessWidget {
             ),
             Container(
               child: Text(
-                " Confrim to join the meeting",
+                " Confirm to join the meeting",
                 style: TextStyle(
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w800,

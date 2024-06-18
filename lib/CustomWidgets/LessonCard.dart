@@ -14,7 +14,7 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){Get.to(VideoScreen(videoUrl: videoLecture.video));},
+      onTap: (){Get.to(VideoScreen(videoUrl: videoLecture.video,));},
       child: Container(
         width: 300,
         margin: const EdgeInsets.only(right: 40, left: 10),

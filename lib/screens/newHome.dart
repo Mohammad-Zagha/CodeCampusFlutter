@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
@@ -9,14 +10,17 @@ import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:hive/hive.dart';
 import 'package:kotlinproj/CustomWidgets/QuizCard.dart';
+import 'package:kotlinproj/classes/Product.dart';
 import 'package:kotlinproj/classes/QuizViewModel.dart';
 import 'package:kotlinproj/controllers/TokenService.dart';
 
 import 'package:kotlinproj/screens/AddExerciseSplash.dart';
+import 'package:kotlinproj/screens/Cart.dart';
 import 'package:kotlinproj/screens/JoinLiveScreen.dart';
 import 'package:kotlinproj/screens/Messenger.dart';
 import 'package:kotlinproj/screens/ProductScreen.dart';
 import 'package:kotlinproj/screens/Subscriptions.dart';
+import 'package:kotlinproj/screens/Transactions.dart';
 import 'package:kotlinproj/screens/addCourse.dart';
 import 'package:kotlinproj/screens/MyCourses.dart';
 import 'package:kotlinproj/screens/preLiveJoinScreen.dart';
@@ -46,6 +50,7 @@ class _HomeState extends State<Home> {
   void initState() {
     userService.fetchCourses();
     userService.fetchQuizzes();
+    userService.fetchProducts();
     super.initState();
   }
 
@@ -138,26 +143,21 @@ class _HomeState extends State<Home> {
                   leading: Icon(Icons.shopping_cart),
                   title: Text("Cart"),
                   onTap: () async {
+                    Get.to(Cart());
                   },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Divider(),
                 ),
-                ListTile(
-                  leading: Icon(Icons.library_books),
-                  title: Text("Books"),
-                  onTap: () async {
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
-                ),
+
+
                 ListTile(
                   leading: Icon(Icons.history),
                   title: Text("Transactions"),
                   onTap: () async {
+
+                    Get.to(Transactions());
                   },
                 ),
               ],
@@ -402,107 +402,115 @@ class _HomeState extends State<Home> {
               ),
               Obx(() {
                 if (userService.teacher.value != null) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  return Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(JoinLiveScreen());
-                        },
-                        child: Container(
-                            width: 150,
-                            height: 150,
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.cyan,
-                                  Colors.greenAccent.shade700
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 0,
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 75,
+                      Text("Live Streaming ", style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(JoinLiveScreen());
+                            },
+                            child: Container(
+                                width: 150,
+                                height: 150,
+                                margin: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 16),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.cyan,
+                                      Colors.greenAccent.shade700
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      "Start",
-                                      style: TextStyle(
-                                          fontFamily: 'Helvetica-rounded',
-                                          color: Colors.white,
-                                          fontSize: 30),
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 0,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () => showJoinDialog(context),
-                        child: Container(
-                            width: 150,
-                            height: 150,
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.orange, Colors.amber.shade400],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 0,
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.video_call_rounded,
-                                    color: Colors.white,
-                                    size: 75,
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 75,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          "Start",
+                                          style: TextStyle(
+                                              fontFamily: 'Helvetica-rounded',
+                                              color: Colors.white,
+                                              fontSize: 30),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      "Join",
-                                      style: TextStyle(
-                                          fontFamily: 'Helvetica-rounded',
-                                          color: Colors.white,
-                                          fontSize: 30),
+                                )),
+                          ),
+                          GestureDetector(
+                            onTap: () => showJoinDialog(context),
+                            child: Container(
+                                width: 150,
+                                height: 150,
+                                margin: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 16),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.orange, Colors.amber.shade400],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 0,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.video_call_rounded,
+                                        color: Colors.white,
+                                        size: 75,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          "Join",
+                                          style: TextStyle(
+                                              fontFamily: 'Helvetica-rounded',
+                                              color: Colors.white,
+                                              fontSize: 30),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ],
                       ),
                     ],
                   );
@@ -545,12 +553,12 @@ class _HomeState extends State<Home> {
                 return Container(
                   margin: EdgeInsets.only(left: 33),
                   padding: EdgeInsets.only(top: 10),
-                  height: 320,
+                  height: 340,
                   child: ListView(
                     padding: EdgeInsets.symmetric(vertical: 28),
                     scrollDirection: Axis.horizontal,
                     children: courses
-                        .map((course) => CourseCard(course: course))
+                        .map((course) => course.isApproved? CourseCard(course: course):Container())
                         .toList(),
                     // Use map() to convert each Course object to a CourseCard widget
                   ),
@@ -989,89 +997,54 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  Get.to(ProductScreen());
-                },
-                child: Container(
-                  width: 400,
-                  height: 330,
-                  child: ListView(
+              Container(
+                width: 400,
+                height: 330,
+                child: Obx(() {
+                  return ListView(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              15.0), // Adjust the radius as needed
-                          border: Border.all(
-                            color: Color(0xff00E676).withOpacity(0.5),
-                            width: 2.0, // Adjust the border width as needed
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(
-                                  0.5), // Adjust the shadow color and opacity
-                              spreadRadius: 7, // Adjust the spread radius
-                              blurRadius: 10, // Adjust the blur radius
-                              offset: Offset(3, 3), // Adjust the offset
+                    children: userService.productsArray.map((product) {
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(ProductScreen(product: product,));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+                            border: Border.all(
+                              color: Color(0xff00E676).withOpacity(0.5),
+                              width: 2.0, // Adjust the border width as needed
                             ),
-                          ],
-                        ),
-                        margin: EdgeInsets.only(right: 10),
-                        child: TransparentImageCard(
-                          width: 230,
-                          height: 300,
-                          imageProvider: AssetImage('assets/books/book2.jpg'),
-                          tags: [
-                            _tag('Best Seller', () {}),
-                            _tag('books', () {}),
-                            _tag('Hot', () {}),
-                          ],
-                          title: _title(text: "CodeQuickly", color: Colors.white),
-                          description: _content(
-                              text: "Card and book info", color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              15.0), // Adjust the radius as needed
-                          border: Border.all(
-                            color: Color(0xff00E676).withOpacity(0.3),
-                            width: 1.0, // Adjust the border width as needed
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5), // Adjust the shadow color and opacity
+                                spreadRadius: 7, // Adjust the spread radius
+                                blurRadius: 10, // Adjust the blur radius
+                                offset: Offset(3, 3), // Adjust the offset
+                              ),
+                            ],
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(
-                                  0.5), // Adjust the shadow color and opacity
-                              spreadRadius: 5, // Adjust the spread radius
-                              blurRadius: 10, // Adjust the blur radius
-                              offset: Offset(0, 3), // Adjust the offset
-                            ),
-                          ],
+                          margin: EdgeInsets.only(right: 10),
+                          child: TransparentImageCard(
+                            width: 230,
+                            height: 300,
+                            imageProvider: MemoryImage(base64Decode(product.image)),
+                            tags: [
+                              _tag('Best Seller', () {}),
+                              _tag('Books', () {}),
+                              _tag('Hot', () {}),
+                            ],
+                            title: _title(text: product.name, color: Colors.white),
+                            description: _content(text: "Price: \$${product.price}", color: Colors.white),
+                          ),
                         ),
-                        margin: EdgeInsets.only(right: 10),
-                        child: TransparentImageCard(
-                          width: 230,
-                          height: 300,
-                          imageProvider: AssetImage('assets/books/book1.jpg'),
-                          tags: [
-                            _tag('Best Seller', () {}),
-                            _tag('books', () {}),
-                            _tag('Hot', () {}),
-                          ],
-                          title: _title(text: "CodeQuickly", color: Colors.white),
-                          description: _content(
-                              text: "Card and book info", color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                      );
+                    }).toList(),
+                  );
+                }),
+              )
             ],
           ),
         ),
@@ -1091,7 +1064,7 @@ class _HomeState extends State<Home> {
             child: Container(
               margin: EdgeInsets.only(top: 10),
               width: 350,
-              height: 280,
+              height: 253,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius:
@@ -1224,39 +1197,7 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 12),
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.question_mark_rounded,
-                                  size: 30,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(width: 28),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Exercise",
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      "47",
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto',
-                                          fontSize: 18,
-                                          letterSpacing: 2,
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+
                         ],
                       )
                     ],
@@ -1283,22 +1224,7 @@ class _HomeState extends State<Home> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.edit_note_outlined,
-                        color: Colors.greenAccent[700],
-                        size: 28,
-                      )),
-                  Text(
-                    "Edit Course",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                  )
-                ],
-              ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -1313,6 +1239,24 @@ class _HomeState extends State<Home> {
                       )),
                   Text(
                     "Add a Course",
+                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Get.to(MyCourses());
+                      },
+                      icon: Icon(
+                        Icons.school_outlined,
+                        color: Colors.greenAccent[700],
+                        size: 28,
+                      )),
+                  Text(
+                    "My Courses",
                     style: TextStyle(color: Colors.grey[600], fontSize: 13),
                   )
                 ],
@@ -1337,61 +1281,7 @@ class _HomeState extends State<Home> {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.my_library_books_rounded,
-                        color: Colors.greenAccent[700],
-                        size: 28,
-                      )),
-                  Text(
-                    "My books",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: Colors.greenAccent[700],
-                        size: 28,
-                      )),
-                  Text(
-                    "My cart",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Get.to(MyCourses());
-                      },
-                      icon: Icon(
-                        Icons.school_outlined,
-                        color: Colors.greenAccent[700],
-                        size: 28,
-                      )),
-                  Text(
-                    "My Courses",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                  )
-                ],
-              )
-            ],
-          )
+
         ],
       ),
     )); // Replace with actual content

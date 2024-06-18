@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:kotlinproj/screens/Exercise.dart';
 import 'package:http/http.dart' as http;
+
+import '../classes/UserService.dart';
+import 'TokenService.dart';
 class Problem {
   final String questionText;
   final String answer; // This might be unused in Dart code, depends on your implementation.
@@ -75,8 +78,10 @@ class QuizController extends GetxController {
   var currentProblemIndex = 0.obs;
   var selectedAnswers = <String?>[].obs;
   var totalScore = 0.obs;
-
+  final TokenService _tokenService = TokenService();
   late Quiz quiz;
+  final UserService userService = Get.find();
+
 
   void loadQuiz(Quiz newQuiz) {
     quiz = newQuiz;
@@ -135,6 +140,30 @@ class QuizController extends GetxController {
   void jumpToQuestion(int index) {
     if (index >= 0 && index < quiz.problems.length) {
       currentProblemIndex.value = index; // Update the current problem index to the new value
+    }
+  }
+  void editPoints(int points) async
+  {
+    String? token = await _tokenService.getToken();
+
+
+    var url = Uri.http('192.168.1.109:3000', '/api/v1/User/editPoints');
+
+
+    var response = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "token": "$token",
+      },
+      body: json.encode({'points':points}),
+    );
+
+    if (response.statusCode == 200) {
+      print("here");
+          userService.user.value!.points +=10;
+    } else {
+      print('Points not added');
     }
   }
   @override
